@@ -1,3 +1,5 @@
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
 [package]
 name = "advent-of-code-2021"
 version = "0.1.0"
@@ -6,6 +8,8 @@ authors = ["Damien Wilson"]
 license = "CC0-1.0"
 publish = false
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+clap = { version = "3.0.0-beta.5", features = ["wrap_help"] }
+log = { version = "0.4", features = ["std", "serde"] }
+serde = { version = "1.0.130", features = ["derive"] }
+simple_logger = { version = "1.15.0", features = ["colors", "timestamps", "stderr"] }
