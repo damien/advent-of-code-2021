@@ -55,3 +55,54 @@ impl Clone for Measurements {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::measurements::Measurements;
+    use crate::calculations::trend::Trend;
+
+    use std::cmp::Ordering;
+    use std::ops::Add;
+
+    fn count_trend(mut measurements: Measurements, ordering: Ordering, inputs: Vec<usize>) -> i32
+    {
+        let mut count: i32 = 0;
+
+        for datum in inputs {
+            measurements.push(datum);
+            let trend = measurements.trend();
+
+            match trend {
+                Some(ord) => {
+                    if ord == ordering {
+                        count = count.add(1);
+                    }
+                }
+                _ => ()
+            }
+        }
+
+        count
+    }
+
+    #[test]
+    // Source: https://adventofcode.com/2021/day/1
+    fn test_linear_upward_trend() {
+        let measurements = Measurements { size: 2, ..Default::default() };
+        let input = vec![199, 200, 208, 210, 200, 207, 240, 269, 260, 263];
+        let expected = 7;
+        let actual = count_trend(measurements, Ordering::Greater, input);
+
+        assert_eq!(expected, actual, "Expected exactly {} occurances of an upward trend", expected);
+    }
+
+    #[test]
+    fn test_linear_downward_trend() {
+        let measurements = Measurements { size: 2, ..Default::default() };
+        let input = vec![199, 200, 208, 210, 200, 207, 240, 269, 260, 263];
+        let expected = 2;
+        let actual = count_trend(measurements, Ordering::Less, input);
+
+        assert_eq!(expected, actual, "Expected exactly {} occurances of an downward trend", expected);
+    }
+}

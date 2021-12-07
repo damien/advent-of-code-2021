@@ -27,3 +27,23 @@ fn test_day_1() {
 
     assert_eq!(count, 1692);
 }
+
+// Source: https://adventofcode.com/2021/day/1#part2
+fn test_day_1_part_2() {
+    let input = Resource::new("day_1_input.txt");
+    let reader = input.reader();
+    let mut measurements = Measurements { size: 2, ..Default::default() };
+    let mut count: usize = 0;
+
+    for line in reader.lines() {
+        let data = line.unwrap().parse::<usize>().unwrap();
+        measurements.push(data);
+
+        let trend = measurements.trend();
+        if let Some(Ordering::Greater) = trend {
+            count = count.add(1);
+        }
+    };
+
+    assert_eq!(count, 1692);
+}
